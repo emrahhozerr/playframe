@@ -1,0 +1,36 @@
+DASHBOARD.PY NASIL CALISTIRILIR
+================================
+dashboard.py artik "5-Pipline" klasorunde, query_runner.py ile AYNI yerde
+duruyor. data/ klasorunu OLDUGU GIBI okur - query_runner.py'ye dokunmadi.
+
+1) Conda ortamini (Miull) aktif et, streamlit paketini kur (bir kere):
+   "C:\Users\ahmet\.conda\envs\Miull\python.exe" -m pip install streamlit
+
+2) Terminalde 5-Pipline klasorune gir, dashboard'u baslat:
+   cd "C:\Users\ahmet\Masaüstü\ds\Miull Data Sciences Final Project\5-Pipline"
+   "C:\Users\ahmet\.conda\envs\Miull\python.exe" -m streamlit run dashboard.py
+
+3) Otomatik olarak taraycida (http://localhost:8501) acilir. Sol menuden
+   istersen Google Gemini API key'ini girebilirsin (bos birakilirsa AI
+   yorum bolumu sessizce gizli kalir, digerlerini hic etkilemez).
+
+5 sekme var: Scout Motoru, Oyuncu Gelisimi (radar), Taktik Motoru, Pas
+Agi, Lige Gore Listele (dogru isim yazmak icin yardimci).
+
+NOT: "Pas Agi" sekmesine ILK tikladiginda, dashboard.py arka planda OTOMATIK
+olarak buyuk dosyayi (eng_players_data_prep.csv, ~1.4 GB) kucultup
+data/event_pass_network_slim.csv.gz dosyasini kendisi uretir - bunun icin
+ayrica bir script calistirmana GEREK YOK. Bu islem ilk seferde birkac
+dakika surebilir (sabirla bekle, ekran "hazirlaniyor" yazip bekleyecek),
+ama bir kere olustuktan sonra hem bu oturumda hem sonraki her
+calistirmada direkt kucuk dosyadan hizlica okunur - islem bir daha
+tekrarlanmaz.
+
+Onceden verilen "shrink_events_for_dashboard.py" scriptini AYRICA
+calistirmana artik gerek yok (istersen manuel alternatif olarak dursun,
+zarari olmaz) - dashboard.py kendi kendine hallediyor.
+
+data/event_pass_network_slim.csv.gz olustuktan sonra boyutunu kontrol et
+(sag tikla > Properties, ya da "dir data" ile). 95 MB altindaysa GitHub'a
+normal dosya olarak (LFS gerekmeden) eklenebilir - bu, ileride deploy
+adimina gecerken onemli olacak.

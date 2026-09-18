@@ -1,0 +1,52 @@
+MIUUL DATA SCIENCES FINAL PROJECT - DOSYA OZETLERI (isim = ne yapiyor)
+========================================================================
+
+1-Data Enginers/
+-----------------
+1-players.py         = players.csv'yi temizler (rol/ulke bilgisini sozlukten cikarir, boy-kilo eksiklerini pozisyona gore doldurur) -> playerss.csv
+2-temas.py           = teams.csv'yi temizler (ulke bilgisini sozlukten cikarir) -> teamss.csv
+3-tags2name.py       = tag ID -> tag ismi referans tablosunu oldugu gibi kopyalar -> tags_2_namee.csv
+4-players_games.py   = player_games.csv'yi temizler (0 dakika oynayanlari siler, sutunlari duzenler) -> players_gamee.csv
+5- matches_england.py= mac formasyon JSON'unu acar, kadro/kart/degisiklik bilgisi cikarir, hatali kendi kalesine gol sutunlarini atar -> matches_engg.csv
+6-Events_England.py  = event konumlarini (x/y) regex ile yeniden uretir, tag'leri one-hot encode eder -> event_englandd.csv
+7-eventid2name.py    = event/subevent ID -> isim referans tablosu -> event_id_2_namee.csv
+all.py               = yukaridaki 5 temiz tabloyu birlestirip 3 final tablo uretir (oyuncu-mac, event, tag) -> player_game_merged.csv, event_england_merged.csv, event_tags_long.csv
+pipline.py           = Ingiltere icin yukaridaki 8 fonksiyonu dogru sirada calistiran ana orkestrator
+prime_key.txt         = tablolarin birbirine hangi ID uzerinden baglandigini gosteren diyagram (dokumantasyon, kod degil)
+
+2-EDA/
+------
+1-event_england_merged_eda.py = event tablosunda eksik/aykiri deger analizi yapar, kendi kalesine gol hatasini (18 saçma satir) burada bulur
+2-player_game_merged_eda.py   = oyuncu-mac tablosunda kategori/sayisal degisken dagilimlarini inceler
+3-eda_cross_check.py          = iki tablonun (event / player_game) birbirine tutarli olup olmadigini kontrol eder, 12 eksik oyuncu-mac kaydini burada tespit eder
+
+3-Data Preprocessing/
+----------------------
+1-event_england_merged.py = event tablosunda oyuncusuz (playerId=0) satirlari siler, match_winner hatasini duzeltir, "unknow" degerlerini NaN yapar -> eng_players_data_prep.csv
+2-player_game_merged.py   = ayni temizligi player_game tablosuna uygular -> player_game_data_prep.csv
+data_prep_pipline.py      = yukaridaki iki fonksiyonu sirayla calistiran orkestrator
+
+4-Feature engineer/
+--------------------
+Player_Development/player_radar.py            = oyuncunun pozisyona ozel 6-7 metrigini radar grafikte gosterir, tum metriklerin ozetini bar grafikte gosterir
+Player_Features/per90_builder.py              = ham event verisinden oyuncu-mac bazinda ~90 istatistik (pas, duello, sut, kart vb.) cikarir, 90 dakikaya oranlar -> perc90_builder.csv
+Player_Features/xt_builder.py                 = sahayi 192 bolgeye ayirip her bolgenin "gol tehdidi" degerini hesaplar, her pas/ilerletmenin kattigi degeri bulur -> event_xt.csv
+Player_Features/season_normalize.py           = oyuncu-mac verisini sezon bazina indirger, pozisyona gore z-score ve percentile hesaplar -> player_season_normalized.csv
+Tactical_Engine/1-tactic_season_normalize.py  = saha koordinatlarini metreye cevirir, takim-mac bazinda taktik olaylari (pres, kanat, ceza sahasi girisi vb.) sayar -> team_match_tactics.csv
+Tactical_Engine/2-team_match_tactics.py       = takim taktik verisini sezon bazina indirger, z-score/percentile hesaplar -> team_season_tactics_normalized.csv
+Tactical_Engine/4-pass_network.py             = secilen mac+takim icin pas agi ve bolge yogunluk isi haritasi cizer
+
+5-Pipline/
+----------
+Scout_Engine/scout_motor.py                   = oyunculari pozisyon icinde oyun stiline gore kumeler, cosine similarity ile en benzer oyunculari bulur (Scout Motoru)
+Tactical_Engine/3-tactic_cluster.py           = takimlari oyun tarzina gore kumeler, cosine similarity ile en benzer takimlari bulur (Taktik Motoru)
+
+6-Pipline/
+----------
+1-data_enginer_pipline.py    = 1-Data Enginers klasorundeki pipline.py ile ayni (Ingiltere-ozel veri temizleme orkestratoru)
+2-data_prep_pipline.py       = 3-Data Preprocessing klasorundeki data_prep_pipline.py ile ayni
+3-feature_enginer_pipline.py = 4-Feature engineer klasorundeki tum fonksiyonlari tek dosyada toplayan fonksiyon kutuphanesi
+4-full_pipline.py            = Data Engineer + Data Preprocessing + Feature Engineer'i tek dosyada birlestiren, relative path'li, git'e uygun tek-lig pipeline
+5-all_lig_full_pipline.py    = 4-full_pipline.py'nin 5 lig (Ingiltere/Ispanya/Italya/Almanya/Fransa) icin genellenmis hali - nihai, gercek calisan pipeline; takim/oyuncu adindan ID bulma fonksiyonlarini da icerir
+kontrol.py                   = final dosyada her ligden kac takim/oyuncu oldugunu sayarak hizli saglik kontrolu yapar
+query_runner.py              = kullaniciya interaktif menu sunan sorgu araci (Scout Motoru, Taktik Motoru, Pas Agi, AI Yorum) - dashboard'un komut satiri oncesi hali

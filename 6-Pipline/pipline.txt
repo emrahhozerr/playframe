@@ -1,0 +1,9 @@
+6-Pipline/
+----------
+1-data_enginer_pipline.py    = 1-Data Enginers klasorundeki pipline.py ile ayni (Ingiltere-ozel veri temizleme orkestratoru)
+2-data_prep_pipline.py       = 3-Data Preprocessing klasorundeki data_prep_pipline.py ile ayni
+3-feature_enginer_pipline.py = 4-Feature engineer klasorundeki tum fonksiyonlari tek dosyada toplayan fonksiyon kutuphanesi
+4-full_pipline.py            = Data Engineer + Data Preprocessing + Feature Engineer'i tek dosyada birlestiren, relative path'li, git'e uygun tek-lig pipeline
+5-all_lig_full_pipline.py    = 4-full_pipline.py'nin 5 lig (Ingiltere/Ispanya/Italya/Almanya/Fransa) icin genellenmis hali - nihai, gercek calisan pipeline; takim/oyuncu adindan ID bulma fonksiyonlarini da icerir
+kontrol.py                   = final dosyada her ligden kac takim/oyuncu oldugunu sayarak hizli saglik kontrolu yapar
+query_runner.py              = kullaniciya interaktif menu sunan sorgu araci (Scout Motoru, Taktik Motoru, Pas Agi, AI Yorum) - dashboard'un komut satiri oncesi hali

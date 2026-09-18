@@ -1,0 +1,44 @@
+5-all_lig_full_pipline.py ICINDEKI FONKSIYONLAR (isim = ne yapiyor)
+======================================================================
+Not: Bu dosya 5 ligi (Ingiltere/Ispanya/Italya/Almanya/Fransa) tek
+pipeline'da isleyen NIHAI/GERCEK calisan dosya. Fonksiyonlar veri akisi
+sirasiyla listelendi.
+
+--- YARDIMCI DOSYA YOLU FONKSIYONLARI ---
+league_matches_csv(league_code)  = verilen ligin ham mac dosyasinin yolunu dondurur (orn. raw_data/matches_Spain.csv)
+league_events_csv(league_code)   = verilen ligin ham event dosyasinin yolunu dondurur (orn. raw_data/events_Spain.csv)
+
+--- ASAMA 1: DATA ENGINEER (ham veri temizleme) ---
+players_pipline(players)                  = players.csv'yi temizler, rol/ulke bilgisini sozlukten cikarir, boy-kilo eksiklerini pozisyona gore doldurur
+teams_pipline(teams)                      = teams.csv'yi temizler, ulke bilgisini sozlukten cikarir
+tag2names_pipline(tag2names)              = tag ID -> isim referans tablosunu kopyalar
+players_games_pipline(players_games)      = oyuncu-mac dakika verisini temizler, 0 dakika oynayanlari siler
+matches_eng_pipline(matches_eng, eutc, league_code, csv)  = mac formasyon JSON'unu acar, kadro/kart/degisiklik bilgisi cikarir; league_code verilirse sonuca hangi ligden oldugunu ekler (COK LIGLI ozellik)
+events_eng_pipline(events_eng, league_code, csv)          = event konumlarini (x/y) regex ile uretir, tag'leri one-hot encode eder; league_code verilirse ekler (COK LIGLI ozellik)
+eventid2_name_pipline(eventid2_name)      = event/subevent ID -> isim referans tablosu
+all_dataframes_pipline(mat, event)        = mac + oyuncu + takim + event tablolarini birlestirip 3 final tablo uretir (oyuncu-mac, event, tag)
+
+--- ASAMA 2: DATA PREPROCESSING (hata duzeltme) ---
+event_eng_data_preprocessing(dataframe, csv)   = oyuncusuz (playerId=0) event satirlarini siler, match_winner hatasini duzeltir, "unknow" degerlerini NaN yapar
+player_game_data_preprocessing(dataframe, csv) = ayni temizligi oyuncu-mac tablosuna uygular
+
+--- ASAMA 3: FEATURE ENGINEER (metrik uretimi) ---
+xt_bulider_func(event_eng, csv)               = sahayi 192 bolgeye ayirip her bolgenin gol tehdidi (xT) degerini hesaplar
+perc90_builder(event_eng, player_game, csv)   = ham event verisinden oyuncu-mac bazinda ~90 istatistik cikarir, 90 dakikaya oranlar
+season_normalize_func(per90_1, xt_match, csv) = oyuncu-mac verisini sezon bazina indirger, pozisyona gore z-score/percentile hesaplar (league_code varsa korur)
+tactic_builder_func(ev)                       = takim-mac bazinda taktik olaylari (pres, kanat, ceza sahasi girisi vb.) sayar
+tactic_season_normalize_func(team_match, csv) = takim taktik verisini sezon bazina indirger, z-score/percentile hesaplar (league_code varsa korur)
+
+--- MOTORLAR (kullaniciya sonuc donduren fonksiyonlar) ---
+scout_engine_func(norm, user, head)           = SCOUT MOTORU: oyunculari pozisyon icinde oyun stiline gore kumeler, cosine similarity ile en benzer oyunculari bulur
+tactic_cluster(norm, team_id, top_n, csv)     = TAKTIK MOTORU: takimlari oyun tarzina gore kumeler, cosine similarity ile en benzer takimlari bulur
+player_radar_func(norm, player_names, top_n)  = secilen oyuncu(lar) icin pozisyona ozel radar grafik + tam istatistik bar grafigi cizer
+pass_network(ev, match_id, team_id)           = secilen mac+takim icin pas agi ve bolge yogunluk isi haritasi cizer
+
+--- ISIMDEN ID BULMA (kullanici dostu arama - Streamlit icin onemli) ---
+load_team_names()                              = teamss.csv'den takim ID + isim listesini okur
+resolve_team_id(query, team_names_df, valid_ids) = yazilan takim adindan (tam/kismi/takma ad - "barca","juve","psg" vb.) teamId bulur
+resolve_player_name(query, norm)               = yazilan oyuncu adindan (tam/kismi eslesme) dogru oyuncu kaydini bulur
+
+--- ORKESTRATOR ---
+main()  = yukaridaki tum fonksiyonlari 5 lig icin dogru sirada calistirir, hepsini birlestirir, nihai CSV'leri uretir (player_seas

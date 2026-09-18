@@ -1,0 +1,47 @@
+query_runner.py ICINDEKI FONKSIYONLAR (isim = ne yapiyor)
+======================================================================
+Not: Bu dosya, pipeline BIR KERE calisip data/ klasorunu doldurduktan
+sonra kullanilan INTERAKTIF SORGU ARACI. Her calistirildiginda menu
+gosterir, kullanicidan oyuncu adi/takim adi/mac secimi alir, "data/"
+klasorundeki hazir CSV'leri okuyup saniyeler icinde sonuc dondurur.
+Streamlit dashboard'unun komut-satiri (console) oncesi hali budur -
+mantik ayni, sadece input()/print() yerine Streamlit widget'lari
+kullanilacak.
+
+--- AI YORUM KATMANI (Google Gemini entegrasyonu) ---
+_get_gemini_client()             = Gemini API client'ini olusturur (API key varsa)
+_gemini_model_adaylarini_getir(client) = Google'dan O AN aktif olan modelleri canli sorgular, "flash" iceren uygun bir modeli onceliklendirir
+_gemini_model_adi_getir()        = kullanilacak model adini dondurur (canli listeden, olmazsa sabit yedek listeden)
+_gemini_model_basarisiz(hata)    = bir model 404/hata verirse, o modeli listeden dusurup bir sonraki adayi dener (kendini onaran mekanizma)
+ai_yorum(baglam)                 = verilen sorgu sonucunu (baglam) Gemini'ye gonderip 2-3 cumlelik teknik/scout yorumu alir; key yoksa veya hata olursa sessizce atlanir
+ai_yorum_yazdir(baglam)          = ai_yorum()'u cagirip sonucu ekrana "[AI Teknik Yorum]" basligiyla yazdirir
+
+--- VERI YUKLEME FONKSIYONLARI ---
+load_player_norm()   = player_season_normalized.csv'yi okur (Scout Motoru / Oyuncu Gelisimi icin)
+load_team_norm()     = team_season_tactics_normalized.csv'yi okur (Taktik Motoru icin)
+load_events()         = eng_players_data_prep.csv'yi okur (Pas Agi icin) - ID kolonlarini sayiya cevirerek mixed-type hatasini onler
+load_team_names()    = teamss.csv'den takim ID + isim listesini okur
+
+--- ISIMDEN ID / KAYIT BULMA (kullanici sadece isim yazsin diye) ---
+resolve_team_id(query, team_names_df, valid_ids)  = yazilan takim adindan (tam/kismi/takma ad - "barca","juve","psg","spurs" vb.) teamId bulur
+resolve_player_name(query, norm)                  = yazilan oyuncu adindan (tam/kismi eslesme, sadece soyad da olabilir) tam oyuncu kaydini bulur
+
+--- MOTORLAR (asil is yapan fonksiyonlar) ---
+scout_engine_func(norm, user, head)   = SCOUT MOTORU: pozisyon icinde oyun stiline gore kumeler, cosine similarity ile en benzer oyunculari bulur
+tactic_cluster(norm, team_id, top_n)  = TAKTIK MOTORU: takimlari oyun tarzina gore kumeler, en benzer takimlari bulur
+player_radar_func(norm, player_names) = OYUNCU GELISIMI: radar grafik + tam istatistik ozet grafigi cizer (1 oyuncu ya da en fazla 3 oyuncu karsilastirma)
+pass_network(ev, match_id, team_id)   = PAS AGI: secilen mac+takim icin pas agi + bolge yogunluk gorseli cizer
+pas_agi_ozet(ev, match_id, team_id)   = pass_network ile ayni hesabi grafik cizmeden yapar, AI yoruma verilecek sayisal ozet metni uretir (toplam/isabetli pas, en cok pas atisan ikili, en hareketli oyuncular)
+
+--- MENU / ORKESTRASYON ---
+run_menu()   = ana interaktif menuyu gosterir ve kullanici secimine gore yukaridaki fonksiyonlari cagirir. 5 secenek:
+               1) SCOUT MOTORU      - oyuncuya en cok benzeyen oyunculari bul
+               2) OYUNCU GELISIMI   - radar grafik + istatistik ozeti (tek ya da 3 oyuncuya kadar karsilastirma)
+               3) TAKTIK MOTORU     - takima en cok benzeyen takimlari bul
+               4) PAS AGI           - takim sec -> mac listesinden sec -> pas agi ciz
+               5) LIGE GORE LISTELE - bir ligden ornek oyuncu/takim adi listeler (dogru isim yazmak icin yardimci)
+               0) Cikis
+               Her sorgudan sonra sonuc otomatik olarak AI yorum katmanina (ai_yorum_yazdir) gonderilir.
+
+--- PROGRAM BASLANGICI (__main__) ---
+if __name__ == "__main__":  = once Google Gemini API key'ini KONSOLDAN sorar (bos gecilebilir), sonra "e/h" ile kullanici cikana kadar run_menu()'yu tekrar tekrar calistirir.
