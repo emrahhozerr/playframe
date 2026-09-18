@@ -1,0 +1,5 @@
+EDA/
+------
+1-event_england_merged_eda.py = event tablosunda eksik/aykiri deger analizi yapar, kendi kalesine gol hatasini (18 saçma satir) burada bulur
+2-player_game_merged_eda.py   = oyuncu-mac tablosunda kategori/sayisal degisken dagilimlarini inceler
+3-eda_cross_check.py          = iki tablonun (event / player_game) birbirine tutarli olup olmadigini kontrol eder, 12 eksik oyuncu-mac kaydini burada tespit eder

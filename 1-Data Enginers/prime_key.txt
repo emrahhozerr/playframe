@@ -1,0 +1,27 @@
+                                  ┌───────────────────┐
+                                  │    matches_eng    │
+                                  │    [KEY: wyId]    │
+                                  └─────────┬─────────┘
+                                            │
+                    ┌───────────────────────┴───────────────────────┐
+                    │ matches_eng.wyId                              │ matches_eng.wyId
+                    │ = players_game.game_id                        │ = event_england.matchId
+                    ▼                                               ▼
+         ┌─────────────────────┐                         ┌─────────────────────┐
+         │    players_game     │                         │    event_england    │
+         │ [KEYS: game_id,     │                         │ [KEYS: matchId,     │
+         │  player_id, team_id]│                         │  playerId, teamId,  │
+         └──────────┬──────────┘                         │  eventId,subEventId]│
+                    │                                    └──────────┬──────────┘
+                    │                                               │
+   ┌────────────────┴──────────────────┐          ┌─────────────────┴─────────────────┐
+   │ players_game.player_id =          │          │ event_england.eventId =           │
+   │ players.wyId                      │          │ event_id_2_name.event             │
+   │                                   │          │ AND event_england.subEventId =    │
+   │ players_game.team_id =            │          │ event_id_2_name.subevent          │
+   │ teams.wyId                        │          │                                   │
+   ▼                                   ▼          ▼                                   ▼
+┌───────────────┐               ┌───────────────┐ ┌───────────────────┐       ┌───────────────┐
+│    players    │               │     teams     │ │  event_id_2_name  │       │  tags_2_name  │
+│  [KEY: wyId]  │               │  [KEY: wyId]  │ │[KEYS:event,subev.]│       │  [KEY: Tag]   │
+└───────────────┘               └───────────────┘ └───────────────────┘       └───────────────┘

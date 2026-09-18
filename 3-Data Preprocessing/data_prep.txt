@@ -1,0 +1,5 @@
+3-Data Preprocessing/
+----------------------
+1-event_england_merged.py = event tablosunda oyuncusuz (playerId=0) satirlari siler, match_winner hatasini duzeltir, "unknow" degerlerini NaN yapar -> eng_players_data_prep.csv
+2-player_game_merged.py   = ayni temizligi player_game tablosuna uygular -> player_game_data_prep.csv
+data_prep_pipline.py      = yukaridaki iki fonksiyonu sirayla calistiran orkestrator

@@ -1,0 +1,9 @@
+4-Feature engineer
+--------------------
+Player_Developmentplayer_radar.py            = oyuncunun pozisyona ozel 6-7 metrigini radar grafikte gosterir, tum metriklerin ozetini bar grafikte gosterir
+Player_Featuresper90_builder.py              = ham event verisinden oyuncu-mac bazinda ~90 istatistik (pas, duello, sut, kart vb.) cikarir, 90 dakikaya oranlar - perc90_builder.csv
+Player_Featuresxt_builder.py                 = sahayi 192 bolgeye ayirip her bolgenin gol tehdidi degerini hesaplar, her pasilerletmenin kattigi degeri bulur - event_xt.csv
+Player_Featuresseason_normalize.py           = oyuncu-mac verisini sezon bazina indirger, pozisyona gore z-score ve percentile hesaplar - player_season_normalized.csv
+Tactical_Engine1-tactic_season_normalize.py  = saha koordinatlarini metreye cevirir, takim-mac bazinda taktik olaylari (pres, kanat, ceza sahasi girisi vb.) sayar - team_match_tactics.csv
+Tactical_Engine2-team_match_tactics.py       = takim taktik verisini sezon bazina indirger, z-scorepercentile hesaplar - team_season_tactics_normalized.csv
+Tactical_Engine4-pass_network.py             = secilen mac+takim icin pas agi ve bolge yogunluk isi haritasi cizer

@@ -1,0 +1,5 @@
+5-Underupervised Learning
+-----------------
+
+Scout_Enginescout_motor.py                   = oyunculari pozisyon icinde oyun stiline gore kumeler, cosine similarity ile en benzer oyunculari bulur (Scout Motoru)
+Tactical_Engine3-tactic_cluster.py           = takimlari oyun tarzina gore kumeler, cosine similarity ile en benzer takimlari bulur (Taktik Motoru)
