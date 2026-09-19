@@ -66,7 +66,7 @@ blank, that section is silently hidden and everything else works normally.
 
 ## Live demo
 
-_(Streamlit Community Cloud link will be shared here.)_
+[https://playframe-mzzpqst9kzfntbai8fjwfb.streamlit.app/](https://playframe-mzzpqst9kzfntbai8fjwfb.streamlit.app/)
 
 ## License
 
