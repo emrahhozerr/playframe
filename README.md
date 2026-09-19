@@ -3,7 +3,7 @@
 Player and team similarity analysis from Wyscout match-event data: **Scout Engine**, **Tactical Engine**,
 **Player Development**.
 
-Miuul Data Science Bootcamp capstone project - Team: **DataGambit (G04)**
+Miuul Data Science Bootcamp capstone project - Team: **DataGambit (G04)** - Mehmet Can Basaran, Yaser Girit, Ibrahim Emrah Ozer
 
 ## What this project does
 
