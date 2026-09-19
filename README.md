@@ -5,6 +5,10 @@ Player and team similarity analysis from Wyscout match-event data: **Scout Engin
 
 Miuul Data Science Bootcamp capstone project - Team: **DataGambit (G04)** - Mehmet Can Basaran, Yaser Girit, Ibrahim Emrah Ozer
 
+## Live demo
+
+[https://playframe-mzzpqst9kzfntbai8fjwfb.streamlit.app/](https://playframe-mzzpqst9kzfntbai8fjwfb.streamlit.app/)
+
 ## What this project does
 
 PlayFrame processes raw match-event data from Europe's top 5 leagues (England, Spain, Italy, Germany,
@@ -63,10 +67,6 @@ streamlit run dashboard.py
 
 You can optionally enter a Google Gemini API key in the sidebar to enable AI-generated commentary; if left
 blank, that section is silently hidden and everything else works normally.
-
-## Live demo
-
-[https://playframe-mzzpqst9kzfntbai8fjwfb.streamlit.app/](https://playframe-mzzpqst9kzfntbai8fjwfb.streamlit.app/)
 
 ## License
 
